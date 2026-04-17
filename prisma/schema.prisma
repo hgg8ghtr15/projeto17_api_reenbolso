@@ -1,0 +1,66 @@
+//  Qualquer alteração no schema, precisa rodar o comando abaixo:
+
+// npm run prisma:migrate -- --name "Criado as tabelas User, Reenbolso"
+// npx prisma migrate dev --name "criado_tabelas"
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  USUARIO
+}
+
+enum Categoria {
+  ALIMENTACAO
+  TRANSPORTE
+  HOSPEDAGEM
+  SERVICOS
+  OUTROS
+}
+
+enum Status {
+  SOLICITADO
+  APROVADO
+  REPROVADO
+}
+
+model Usuario {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+  senha String
+
+  role       UserRole    @default(USUARIO)
+  reembolsos Reembolso[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
+
+model Reembolso {
+  id        String @id @default(uuid())
+  titulo    String
+  descricao String
+  valor     Float
+
+  categoria   Categoria @default(OUTROS)
+  nomearquivo String
+  status      Status    @default(SOLICITADO)
+
+  userId String
+  user   Usuario @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reembolsos")
+}
