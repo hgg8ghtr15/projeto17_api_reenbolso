@@ -5,7 +5,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -14,7 +13,7 @@ datasource db {
 
 enum UserRole {
   ADMIN
-  USUARIO
+  COLABORADOR
 }
 
 enum Categoria {
@@ -37,7 +36,7 @@ model Usuario {
   email String @unique
   senha String
 
-  role       UserRole    @default(USUARIO)
+  role       UserRole    @default(COLABORADOR)
   reembolsos Reembolso[]
 
   createdAt DateTime @default(now()) @map("created_at")
