@@ -1,10 +1,11 @@
-const { Router } = require("express");
-const { LoginController } = require("@/controllers/login-controller");
+import { Router } from "express";
+import { LoginController } from "@/controllers/login-controller";
+import { LoginService } from "@/service/login-service";
 
 const loginRoutes = Router();
+const loginService = new LoginService();
+const loginController = new LoginController(loginService);
 
-const loginController = new LoginController();
-
-loginRoutes.post("/login", loginController.create);
+loginRoutes.post("/", (req, res) => loginController.create(req, res));
 
 export { loginRoutes };
