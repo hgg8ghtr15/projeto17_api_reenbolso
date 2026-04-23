@@ -1,6 +1,6 @@
 import { prisma } from "@/database/prisma";
 import { AppError } from "@/utils/AppError";
-import { authConfig } from "@/utils/authConfig";
+import { authConfig } from "@/config/authConfig";
 import { sign } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -11,7 +11,6 @@ interface LoginRequest {
 
 class LoginService {
     async execute({ email, senha }: LoginRequest) {
-        console.log("email", email);
 
         const usuario = await prisma.usuario.findUnique({
             where: { email },

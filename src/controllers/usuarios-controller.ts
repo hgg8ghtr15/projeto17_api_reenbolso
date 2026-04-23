@@ -4,20 +4,20 @@ import { UsuariosService } from "@/service/usuarios-service";
 
 const createUsuarioSchema = z.object({
     name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
-    email: z.string().email("Email inválido"),
+    email: z.email("Email inválido").trim().toLowerCase(),
     senha: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
     role: z.enum(["ADMIN", "COLABORADOR"]),
 });
 
 const filterUsuarioSchema = z.object({
     role: z.enum(["ADMIN", "COLABORADOR"]).optional(),
-    email: z.string().email("Email inválido").optional(),
+    email: z.email("Email inválido").trim().toLowerCase().optional(),
     name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres").optional(),
 });
 
 const updateUsuarioSchema = z.object({
     name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres").optional(),
-    email: z.email("Email inválido").optional(),
+    email: z.email("Email inválido").trim().toLowerCase().optional(),
     role: z.enum(["ADMIN", "COLABORADOR"]).optional(),
 });
 
